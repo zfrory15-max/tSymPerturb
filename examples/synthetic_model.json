@@ -1,0 +1,198 @@
+{
+  "model": {
+    "source_labels": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "outcome_labels": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "B": [
+      [
+        0.6,
+        0.1,
+        0,
+        -0.05
+      ],
+      [
+        0.25,
+        0.5,
+        0.1,
+        0
+      ],
+      [
+        0,
+        0.2,
+        0.4,
+        0.15
+      ],
+      [
+        0.1,
+        0,
+        -0.08,
+        0.55
+      ]
+    ],
+    "mu1": [
+      2,
+      1.5,
+      1,
+      2.5
+    ],
+    "sigma1": [
+      [
+        1,
+        0.2,
+        0,
+        0
+      ],
+      [
+        0.2,
+        0.8,
+        0.1,
+        0
+      ],
+      [
+        0,
+        0.1,
+        1.2,
+        0.15
+      ],
+      [
+        0,
+        0,
+        0.15,
+        0.9
+      ]
+    ],
+    "psi": [
+      [
+        0.25,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0.3,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0.2,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0.4
+      ]
+    ],
+    "intercept": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "anchors": [
+      0,
+      0.25,
+      0,
+      0.5
+    ],
+    "modules": [
+      "A",
+      "A",
+      "B",
+      "B"
+    ],
+    "orientation": "outcome_by_source",
+    "higher_is_worse": true,
+    "scale": "Synthetic raw units; higher means worse; all vectors and matrices in fitted raw scale"
+  },
+  "scoring": {
+    "candidates": [
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "partners": {
+      "S1": [
+        "S2",
+        "S3",
+        "S4"
+      ],
+      "S2": [
+        "S1",
+        "S3",
+        "S4"
+      ],
+      "S3": [
+        "S1",
+        "S2",
+        "S4"
+      ],
+      "S4": [
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    "outcome_weights": [
+      1,
+      2,
+      1,
+      1
+    ],
+    "utility_weights": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "horizon": 3,
+    "gamma": 0.7,
+    "q": 0.8,
+    "breadth_threshold": 0.05,
+    "module_threshold": 0.03
+  },
+  "dose_requests": [
+    {
+      "doses": {
+        "S1": 0
+      }
+    },
+    {
+      "doses": {
+        "S1": 0.25
+      }
+    },
+    {
+      "doses": {
+        "S1": 0.5
+      }
+    },
+    {
+      "doses": {
+        "S1": 0.75
+      }
+    },
+    {
+      "doses": {
+        "S1": 1
+      }
+    }
+  ]
+}
