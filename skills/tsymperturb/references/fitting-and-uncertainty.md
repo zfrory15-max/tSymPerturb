@@ -1,0 +1,54 @@
+# Optional two-wave fitting and complete-pipeline bootstrap
+
+This adapter implements an **applied-data participant bootstrap**, following the propagation recommendation in manuscript §9.12. It is not a reproduction of the paper's 200 independently generated datasets per sample size, not a Monte Carlo validation of analytical expectations, and not an empirical demonstration of clinical effectiveness.
+
+## Inputs and command
+
+Install `python -m pip install -r requirements-fitting.txt`. The NumPy-only core does not require scikit-learn. From the repository root:
+
+```sh
+python skills/tsymperturb/scripts/fit_tsymperturb.py examples/synthetic_paired.json --n-boot 1000 --seed 42 --output bootstrap.json
+```
+
+The example contains 60 deterministic synthetic matched participants, four fictional symptoms and two fictional modules, generated with NumPy seed 831. It is solely a software example, not real participant data or the original 22-symptom generating system. A ten-replicate smoke check is sufficient to exercise the command but not to estimate reliable intervals.
+
+JSON fields:
+- `t1`, `t2`: finite numeric n-by-p arrays, same participant row and symptom column order; at least three rows and three symptoms
+- `fitting`: `labels`, `modules`, `raw_anchors`, `higher_is_worse: true`; optionally `alpha` (default .03), `max_iter` (10000), `tol` (1e-8)
+- `scoring`: the exact fixed core score configuration: candidates, partners, outcome/utility weights, horizon, discount, and optional block fraction and thresholds
+
+Orient all symptoms and clinical anchors beforehand so larger values mean worse states. A raw anchor of zero is not a standardized zero. Modules, candidate set, partner sets, weights, thresholds and alpha are fixed prespecified inputs. There is no automated variable selection outside Lasso, hyperparameter tuning or evidence-based default for the clinical choices.
+
+## Estimation contract
+
+At the original fit and inside **every** bootstrap replicate:
+
+1. Separately estimate T1 and T2 means and population-form sample SDs (`ddof=0`), then standardize each wave
+2. Transform raw clinical anchors using that replicate's T1 means and SDs
+3. Regress each standardized T2 outcome on all standardized T1 symptoms with `Lasso(alpha=.03, fit_intercept=False)` by default; coefficients use `B[outcome, source]`
+4. Estimate baseline covariance as `Z1.T @ Z1 / n` and residual covariance as the centered residual cross-product divided by n; standardized-scale intercept is zero
+5. Construct the model and rerun all seven utilities, pair comparisons, candidate-set min–max normalization and tVPPS ranking
+
+The `ddof=0`, residual covariance plug-in, solver tolerance and maximum-iteration conventions are explicit adapter choices where the manuscript does not specify all implementation details. Scikit-learn cyclic coordinate descent is deterministic; convergence warnings become failed replicates rather than silently accepting a nonconverged fit.
+
+The core derives normalization SD from `B Σ1 Bᵀ + Ψ`, **not** empirical T2 SD. The underlying moment model assumes baseline innovations are uncorrelated with source state. Penalized-fit residuals need not be empirically orthogonal to predictors, so this model-implied variance need not exactly reproduce observed T2 variance. The adapter records empirical predictor–residual covariance and normalization SD for inspection; it does not add a cross-covariance correction to the manuscript's model. This discrepancy and model fit deserve substantive assessment before applied interpretation.
+
+## Resampling, ties and intervals
+
+`bootstrap_pairs` resamples n row indices with replacement and applies the **same indices** to T1 and T2. Independent participants are assumed. Reproducibility uses `numpy.random.default_rng(seed)`; reproduce software versions as well as the seed for cross-machine audits.
+
+Competition rank is `1 + number of strictly larger tVPPS scores`. Exactly tied targets share rank; all ties at a top-K boundary count as selected. Consequently, top-K probabilities across targets may sum to more than K. K=1,3,5 are reported, including K larger than the number of candidates (all candidates selected). No arbitrary alphabetical tie-break changes selection.
+
+Outputs preserve original fit and score, per-replicate fit diagnostics and full scoring results, attempted/succeeded/failed counts, failure messages and reason counts, and per-candidate summaries:
+
+- tVPPS and rank percentile intervals at requested confidence (default .95). NumPy linear quantiles can yield fractional endpoints for discrete ranks; these are descriptive percentile uncertainty intervals, not guaranteed nominal-coverage confidence sets
+- Top-1/3/5 selection frequencies, dividing by **successful** replicates only
+- Wilson intervals for the frequency's **finite-bootstrap Monte Carlo error**, conditional on the observed data and successful-replicate distribution. These are not a second confidence interval for the population target's selection probability and do not correct selection bias or model misspecification
+
+Every requested replicate is attempted exactly once. Degenerate resamples (constant columns), nonconvergence or undefined core quantities (such as zero communication capacity) are logged, not replaced. Failure-conditioned summaries can be biased. Inspect the failure rate and causes, do not hide failed attempts, and do not present a high-failure result as reliable. Zero successful replicates gives an empty summary and explicit `no_successful_replicates` status. A failed original fit/score aborts analysis rather than generating misleading bootstrap output.
+
+## Boundaries
+
+There is no missing-data imputation or silent row deletion, inverse-probability weighting, clustered/household/site bootstrap, irregular-interval adjustment, measurement-error model, time-varying confounding adjustment, causal identification, bounded/nonlinear re-fitting, nested penalty selection, or participant matching by identifier. Match and validate identities upstream; row order cannot establish identity by itself. The adapter does not validate external clinical anchors or a causal interpretation.
+
+Thresholds, penalization, candidate normalization and discrete ranks are non-smooth. Percentile bootstrap summaries describe stability under this specified procedure and are not proof of valid inferential coverage. All outputs remain model-implied hypotheses. Robustness is an uncertainty diagnostic, never an eighth utility.
