@@ -27,7 +27,7 @@ def test_isolated_skill_cli(tmp_path):
                          cwd=tmp_path,capture_output=True,text=True)
     assert proc.returncode==0,proc.stderr
     result=json.loads(out.read_text())
-    assert len(result['tvpps'])==4 and len(result['dose_results'])==5
+    assert len(result['tvpps'])==22 and len(result['dose_results'])==6
 
 def test_cli_failure_does_not_create_output(tmp_path):
     inp=tmp_path/'bad.json'; inp.write_text('{}')
