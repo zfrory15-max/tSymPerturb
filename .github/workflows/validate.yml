@@ -27,4 +27,7 @@ jobs:
       - run: python -m pytest -q
       - run: python skills/tsymperturb/scripts/fit_tsymperturb.py examples/synthetic_paired.json --n-boot 10 --seed 42 --output outputs/bootstrap.json
       - run: python docs/validation/run_audit.py
+      - run: python docs/validation/audit_synthetic22.py
+      - run: python docs/validation/fit_audit.py
+      - run: python examples/strategy_demo.py
       - run: python docs/validation/mc_audit.py
