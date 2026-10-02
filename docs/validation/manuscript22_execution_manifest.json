@@ -1,0 +1,144 @@
+{
+  "recorded_utc": "2026-10-01T03:01:51.260112+00:00",
+  "python": "3.12.14",
+  "numpy": "2.3.5",
+  "sklearn": "1.8.0",
+  "purpose": "Current constructed22 implementation validation; original22 replication remains NOT_RUN",
+  "original_model_replication": "NOT_RUN",
+  "original_model_metrics_reproduced": false,
+  "environment_note": "pytest available via PYTHONPATH=/tmp/tsymperturb-test-deps; OPENBLAS_NUM_THREADS=1; no source package installation needed",
+  "synthetic22_unit_tests": {
+    "command": "python -m pytest -q tests/test_manuscript22_contract.py tests/test_synthetic22_examples.py",
+    "exit_code": 0,
+    "stdout": "....................                                                     [100%]\n20 passed in 0.64s\n",
+    "stderr": ""
+  },
+  "all_package_unit_tests": {
+    "command": "python -m pytest -q",
+    "exit_code": 0,
+    "stdout": ".......................................................                  [100%]\n55 passed in 2.42s\n",
+    "stderr": ""
+  },
+  "core_cli": {
+    "command": "python skills/tsymperturb/scripts/tsymperturb.py examples/synthetic_model.json --output /tmp/synthetic22-validation-2mg6c8vg/core.json",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "bootstrap_cli": {
+    "command": "python skills/tsymperturb/scripts/fit_tsymperturb.py examples/synthetic_paired.json --n-boot 10 --seed 42 --output /tmp/synthetic22-validation-2mg6c8vg/bootstrap.json",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  "independent_synthetic22_oracle": {
+    "command": "python docs/validation/audit_synthetic22.py",
+    "exit_code": 0,
+    "stdout": "{\n  \"status\": \"PASS\",\n  \"scope\": \"SYNTHETIC ILLUSTRATIVE ONLY; original replication NOT_RUN\",\n  \"symptoms\": 22,\n  \"modules\": 4,\n  \"utilities\": 7,\n  \"pairs\": 231,\n  \"dose_checks\": 132,\n  \"max_response_pair_error\": 5.551115123125783e-17,\n  \"max_response_dose_error\": 2.220446049250313e-16,\n  \"spectral_radius\": 0.7675154569729512,\n  \"top5\": [\n    \"S19\",\n    \"S14\",\n    \"S09\",\n    \"S12\",\n    \"S17\"\n  ]\n}\n",
+    "stderr": ""
+  },
+  "internal_small_oracle": {
+    "command": "python docs/validation/run_audit.py",
+    "exit_code": 0,
+    "stdout": "PASS independent oracle: seven utilities, normalization, orientation, anchor transform, covariance, dose linearity, pair additivity, blocks, noncommuting transitions, interventions, acquisition, clipped Gaussian quadrature, isolated CLI\nINPUT FAILURES []\nPASS overflow model rejected: FloatingPointError\nPASS unequal module sizes, unweighted module means, inclusive breadth/reach thresholds\nPASS weight-sum overflow rejected\n",
+    "stderr": ""
+  },
+  "independent_fit_audit": {
+    "command": "python docs/validation/fit_audit.py",
+    "exit_code": 0,
+    "stdout": "PASS independent adapter: matched resampling, replicate standardization/anchor transform, direct Lasso coefficients, structural covariance convention, rerun normalization, rank probabilities, Wilson endpoints, isolated CLI (8/8 bootstrap successes)\nPASS real degenerate resamples logged: 25 successful, 5 failed; exactly 30 attempts\n",
+    "stderr": ""
+  },
+  "synthetic22_monte_carlo": {
+    "command": "python docs/validation/mc_audit.py",
+    "exit_code": 0,
+    "stdout": "PASS SYNTHETIC22 Monte Carlo: targets=22, n=120000, seed=20261002, largest mean-error/MCSE=2.728486; covariance max error=0.004429; original replication NOT_RUN\n",
+    "stderr": ""
+  },
+  "strategy_demo": {
+    "command": "python examples/strategy_demo.py",
+    "exit_code": 0,
+    "stdout": "Full strategy JSON validated; summary below",
+    "stderr": "",
+    "result_summary": {
+      "dimensions": {
+        "symptoms": 22,
+        "modules": 4,
+        "transitions": 4
+      },
+      "acquisition_candidate_subset": [
+        "S19",
+        "S14",
+        "S09",
+        "S12",
+        "S17",
+        "S10",
+        "S18",
+        "S21"
+      ],
+      "target_acquisition": {
+        "objective": 0.26061986195642495,
+        "orders": [
+          [
+            "S19",
+            "S21"
+          ]
+        ],
+        "interpretation": "Additive target-acquisition decision only; not treatment timing."
+      }
+    }
+  },
+  "generator_regeneration": {
+    "command": "python examples/generate_synthetic22.py --output-dir /tmp/synthetic22-validation-2mg6c8vg/regenerated",
+    "exit_code": 0,
+    "stdout": "Generated SYNTHETIC ILLUSTRATIVE 22-symptom / 4-module model and 250 paired participants; original replication NOT_RUN\n",
+    "stderr": ""
+  },
+  "missing_original_gate": {
+    "command": "python docs/validation/verify_manuscript22.py --output docs/validation/manuscript22_readiness.json",
+    "exit_code": 2,
+    "stdout": "{\n  \"schema_version\": 1,\n  \"status\": \"NOT_RUN\",\n  \"replication_status\": \"NOT_RUN\",\n  \"scope\": \"Input design consistency and deterministic package algebra only\",\n  \"missing_inputs\": [\n    \"author-supplied original model JSON\"\n  ],\n  \"checks\": [],\n  \"executed\": [],\n  \"software\": {\n    \"python\": \"3.12.14\",\n    \"numpy\": \"2.3.5\"\n  },\n  \"runner_sha256\": \"31b653ed9573f8a7ffd0b39bbcbcba4767cc9dabbe86cc88a702e4816ef8de4f\",\n  \"core_sha256\": \"19871f33f2e17ba3d12845fee6c1b9a3572c002295af5112f1f66d71ad4a6f7a\",\n  \"not_run\": [\n    \"250000_draws_per_target_monte_carlo\",\n    \"600_dataset_finite_sample_recovery\",\n    \"population_tvpps_and_benchmarks\",\n    \"four_wave_and_repeated_intervention\"\n  ],\n  \"disclaimer\": \"No substitute 22-node reconstruction is an original-model replication.\"\n}\n",
+    "stderr": ""
+  },
+  "generator_byte_reproducibility": {
+    "status": "PASS",
+    "files": 3
+  },
+  "cli_verified_dimensions": {
+    "core_targets": 22,
+    "dose_requests": 6,
+    "bootstrap_targets": 22,
+    "bootstrap_succeeded": 10,
+    "bootstrap_failed": 0
+  },
+  "files_sha256": {
+    "docs/validation/audit_synthetic22.py": "c302f4e855ef5c83ec15269961e13e71504368526eb0e4dfe4f659d66c5c5b49",
+    "docs/validation/fit_audit.py": "0f4eb2d636e74efc2776b4188a696967d779be5016e4e01e87b74d68c442b142",
+    "docs/validation/manuscript22_readiness.json": "c576f0cee72c784ae7b4f83ae988bf54d6cf4b972ad5ac4452f8634fb24486bd",
+    "docs/validation/manuscript22_spec.json": "ebc0ccbee0af2f6e324b7509177cecb193d7a0ae898e2cf068c99682335dfef5",
+    "docs/validation/mc_audit.py": "460e94221484e9aade63f3f4089710b080f9406490a58df618f256bbf19a9d7f",
+    "docs/validation/oracle.py": "dbc8728a68bedf495d12340a2714d08b7aa8a13d8cbc216057fb2aec4fbe9fde",
+    "docs/validation/run_audit.py": "628a562159b1d3731c1fb7c2fdcaa493a2c9bd64bb21ace3df1c8e28078ea8f8",
+    "docs/validation/verify_manuscript22.py": "31b653ed9573f8a7ffd0b39bbcbcba4767cc9dabbe86cc88a702e4816ef8de4f",
+    "examples/generate_synthetic22.py": "450d103715e8bf08764cf691f6b71bd4aff7d2ae17e9107cfd166cb282e22cd9",
+    "examples/strategy_demo.py": "8131f183743cd2abdfb66517a1a072e34da01a6c56c0be927b981c44d9f17183",
+    "examples/synthetic22_metadata.json": "640b6957e25795415413a6b1885b889d0425658a36b48d430430660a2aadc4e3",
+    "examples/synthetic_model.json": "e7ee08a0b12ddb193a02ddf1b004f36f894b88d30435199ef6e91e675f84d612",
+    "examples/synthetic_paired.json": "823ec90fa4dc7f54b95f2887ef41b3f741ae2b6be696686c0ca9d8e7a0541d0d",
+    "skills/tsymperturb/scripts/fit_tsymperturb.py": "1515bb7d4b257a364f1ecfb359dfbc4cdd7b928022d2bbcedf764033b35270da",
+    "skills/tsymperturb/scripts/tsymperturb.py": "19871f33f2e17ba3d12845fee6c1b9a3572c002295af5112f1f66d71ad4a6f7a",
+    "tests/conftest.py": "da6f923bf0b73bfb6b50b51161b82306a1a1ebd5da66badc8ed2f26df4d3222e",
+    "tests/test_fit_adapter.py": "58779ac9c57258097b2628ef356d48a942333a98469d8863734119e4a5c45fc0",
+    "tests/test_manuscript22_contract.py": "777c13fd68c8a34999076df131d5a9581f574850e60a6ca081aeefebbcb6b879",
+    "tests/test_numerics.py": "ae0cf2fde77c9b140212eb5db054aae60e8e694830c3937ce6b016f43b0b4206",
+    "tests/test_packaging.py": "e2f2cc8b7ca419a72b88fa5d9e777cbca73217b7cdee31adb435a8da0677d9e5",
+    "tests/test_synthetic22_examples.py": "914f2167ce710902e5eee1e774633c52357d246df3feebc3686a7d31f90ee85f"
+  },
+  "blocked_stages": [
+    "Original 22 targets x 250000-draw Monte Carlo",
+    "Original 600 independent finite-sample datasets",
+    "Original population tVPPS",
+    "Original four-transition and top-eight sequence results"
+  ],
+  "next_required": "Author-supplied original arrays/generator, original labels/module map, and missing original configuration; constructed example is not a substitute"
+}

@@ -6,14 +6,11 @@ from numpy.testing import assert_allclose as eq
 from sklearn.linear_model import Lasso
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'skills'/'tsymperturb'/'scripts'))
 import fit_tsymperturb as f
-rng=np.random.default_rng(20260930)
-n=70;p=4
-x=rng.normal(size=(n,p))*[.5,2.,1.,3.]+[2.,3.,4.,5.]
-B=np.array([[.5,.1,0,0],[.2,.4,.1,0],[0,.1,.5,.1],[.1,0,.2,.4]])
-y=x@B.T+rng.normal(size=(n,p))*.2+[2,0,-1,1]
-names=['a','b','c','d']
-fitting=dict(labels=names,modules=['A','A','B','B'],raw_anchors=[0,.5,1,0],higher_is_worse=True)
-scoring=dict(candidates=names,partners={name:[o for o in names if o!=name] for name in names},outcome_weights=[1,2,3,4],utility_weights=[1]*7,horizon=3,gamma=.7)
+payload=json.loads((Path(__file__).resolve().parents[2]/'examples/synthetic_paired.json').read_text())
+x=np.asarray(payload['t1']); y=np.asarray(payload['t2'])
+n,p=x.shape
+assert (n,p)==(250,22)
+fitting=payload['fitting']; scoring=payload['scoring']
 r=f.bootstrap_pairs(x,y,fitting=fitting,scoring=scoring,n_boot=8,seed=91)
 assert r['succeeded']==8 and r['failed']==0
 bs=np.random.default_rng(91)

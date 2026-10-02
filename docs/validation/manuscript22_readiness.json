@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "status": "NOT_RUN",
+  "replication_status": "NOT_RUN",
+  "scope": "Input design consistency and deterministic package algebra only",
+  "missing_inputs": [
+    "author-supplied original model JSON"
+  ],
+  "checks": [],
+  "executed": [],
+  "software": {
+    "python": "3.12.14",
+    "numpy": "2.3.5"
+  },
+  "runner_sha256": "31b653ed9573f8a7ffd0b39bbcbcba4767cc9dabbe86cc88a702e4816ef8de4f",
+  "core_sha256": "19871f33f2e17ba3d12845fee6c1b9a3572c002295af5112f1f66d71ad4a6f7a",
+  "not_run": [
+    "250000_draws_per_target_monte_carlo",
+    "600_dataset_finite_sample_recovery",
+    "population_tvpps_and_benchmarks",
+    "four_wave_and_repeated_intervention"
+  ],
+  "disclaimer": "No substitute 22-node reconstruction is an original-model replication."
+}

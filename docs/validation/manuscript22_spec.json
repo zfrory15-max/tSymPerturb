@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "title": "Strict original 22-symptom manuscript reproduction contract",
+  "source": {
+    "sections": [
+      "6",
+      "7",
+      "9.9",
+      "9.10",
+      "9.11",
+      "9.12"
+    ],
+    "basis": "Supplied manuscript PDF and identical main.tex in two supplied archives; no original generator or arrays supplied"
+  },
+  "data_policy": "Never infer or tune a substitute model to match summary statistics. Design consistency does not authenticate original data.",
+  "model": {
+    "nodes": 22,
+    "modules": 4,
+    "orientation": "outcome_by_source",
+    "offdiagonal_nonzero": 53,
+    "offdiagonal_positive": 47,
+    "offdiagonal_negative": 6,
+    "autoregressive_range": [
+      0.43,
+      0.71
+    ],
+    "spectral_radius": 0.827,
+    "baseline_mean_range": [
+      1.44,
+      2.64
+    ],
+    "baseline_sd_range": [
+      0.63,
+      0.83
+    ],
+    "residual_sd_range": [
+      0.38,
+      0.52
+    ],
+    "residual_covariance": "diagonal",
+    "baseline_distribution": "multivariate Gaussian; one weak general factor and four module factors, loadings absent",
+    "intercept": "(I-B)mu1",
+    "original_scale_anchors": 0
+  },
+  "rounding_policy": {
+    "spectral_radius_absolute_tolerance": 0.0005,
+    "range_endpoint_absolute_tolerance": 0.005,
+    "note": "Half of last reported decimal unit plus 1e-12 numeric slack. Comparisons concern rounded summaries only, not matrix identity."
+  },
+  "required_original_inputs": [
+    "ordered 22 labels",
+    "complete four-module assignment",
+    "B",
+    "mu1",
+    "Sigma1",
+    "Psi or residual SD vector",
+    "six exact dose levels",
+    "outcome weights",
+    "original provenance reference"
+  ],
+  "additional_reproduction_inputs": [
+    "generator and RNG/child-seed order",
+    "communication H and gamma",
+    "partner sets",
+    "multiwave eta and follow-up standardisation",
+    "repeated-intervention policy and doses",
+    "finite-sample scaling and fitted follow-up SD conventions",
+    "lasso solver controls",
+    "Monte Carlo baseline pairing and random-stream allocation"
+  ],
+  "known_labels_only": [
+    "Fatigue",
+    "Rumination",
+    "Anxiety",
+    "Pain",
+    "Anhedonia",
+    "Insomnia",
+    "Worry",
+    "Concentration difficulty",
+    "Palpitations",
+    "Kinesiophobia",
+    "Activity avoidance"
+  ],
+  "framework_components": {
+    "vKO": "deterministic state anchoring checked on author model and synthetic unit tests",
+    "vKD": "linked location-scale moments checked on synthetic unit tests; six-dose author algebra",
+    "vDP": "22 targets x six author-supplied doses; G(d)=dG(1)",
+    "communication_blocking": {
+      "variants": [
+        "edge-level",
+        "node-centred (full column; optional cross-only)"
+      ],
+      "implemented_verification": "synthetic-only unit tests; manuscript utility reproduction NOT_RUN without H/gamma"
+    },
+    "combination": "all 231 pairs; vector and common-pair-excluded additivity",
+    "sequence_optimisation": "synthetic recursion unit test only; original top-eight sequence simulation NOT_RUN without policy and discount"
+  },
+  "scoring": {
+    "dimensions": 7,
+    "utility_weights": "equal",
+    "breadth_threshold": 0.05,
+    "module_threshold": 0.03,
+    "block_q": 0.8,
+    "constant_dimension_score": 50,
+    "combination": "mean of positive-part pair increments; retain signed increments",
+    "robustness_in_score": false
+  },
+  "algebra": {
+    "target_count": 22,
+    "dose_level_count": 6,
+    "dose_levels": null,
+    "pair_count": 231,
+    "implementation_absolute_tolerance": 1e-10,
+    "published_dose_residual": 2.78e-17,
+    "published_pair_residual": 2.78e-17,
+    "note": "Published floating-point residuals are observations, not universal exact targets"
+  },
+  "monte_carlo": {
+    "draws_per_target": 250000,
+    "target_count": 22,
+    "published_metrics": {
+      "max_outcome_error_sd": 0.0057,
+      "efficacy_pearson_r": 0.99991,
+      "max_efficacy_error_sd": 0.0013
+    }
+  },
+  "finite_sample": {
+    "n": [
+      250,
+      500,
+      1000
+    ],
+    "independent_datasets_per_n": 200,
+    "total_datasets": 600,
+    "master_seed": 20260816,
+    "lasso_alpha": 0.03,
+    "standardised_fit_intercept": false,
+    "anchor_transform": "(0-sample_source_mean)/sample_source_sd",
+    "published_metrics": [
+      {
+        "n": 250,
+        "rank_rho": [
+          0.76,
+          0.58,
+          0.88
+        ],
+        "top5": [
+          0.6,
+          0.4,
+          0.8
+        ],
+        "rmse": [
+          13.94,
+          9.81,
+          18.46
+        ]
+      },
+      {
+        "n": 500,
+        "rank_rho": [
+          0.88,
+          0.74,
+          0.95
+        ],
+        "top5": [
+          0.8,
+          0.6,
+          1.0
+        ],
+        "rmse": [
+          9.47,
+          6.58,
+          13.11
+        ]
+      },
+      {
+        "n": 1000,
+        "rank_rho": [
+          0.93,
+          0.85,
+          0.98
+        ],
+        "top5": [
+          0.8,
+          0.6,
+          1.0
+        ],
+        "rmse": [
+          6.39,
+          4.1,
+          9.25
+        ]
+      }
+    ],
+    "metric_triplet": "median, 2.5th percentile, 97.5th percentile"
+  },
+  "published_population_tvpps": {
+    "Fatigue": 100.0,
+    "Rumination": 84.6,
+    "Anxiety": 61.3,
+    "Pain": 61.3,
+    "Anhedonia": 52.2
+  },
+  "published_multiwave": {
+    "transitions": 4,
+    "step1_vs_step4_rho": 0.88,
+    "step1_vs_discounted_cumulative_rho": 0.94,
+    "sequence_candidate_count": 8,
+    "Fatigue_to_Pain": 0.592,
+    "Pain_to_Fatigue": 0.527,
+    "difference": 0.065,
+    "interpretation": "stationarity-based strategy simulation, not identified clinical treatment order"
+  },
+  "runner_contract": {
+    "command": "python docs/validation/verify_manuscript22.py author_model.json --output report.json",
+    "exit_codes": {
+      "1": "INVALID_INPUT, DESIGN_MISMATCH or ALGEBRA_FAILED",
+      "2": "NOT_RUN due to missing original input",
+      "3": "PARTIAL_VERIFIED only; full reproduction remains NOT_RUN"
+    },
+    "full_reproduction_implemented": false
+  },
+  "published_figure2d_median_rank_recovery": {
+    "sample_size_columns": [
+      250,
+      500,
+      1000
+    ],
+    "efficacy": [
+      0.86,
+      0.93,
+      0.96
+    ],
+    "cross_spillover": [
+      0.8,
+      0.91,
+      0.95
+    ],
+    "breadth": [
+      0.41,
+      0.6,
+      0.8
+    ],
+    "cross_module": [
+      0.64,
+      0.79,
+      0.88
+    ],
+    "communication": [
+      0.82,
+      0.91,
+      0.95
+    ],
+    "combination": [
+      0.79,
+      0.9,
+      0.95
+    ],
+    "spillover_fraction": [
+      0.86,
+      0.93,
+      0.96
+    ],
+    "source_note": "Numeric cell labels visually transcribed from figure2d; these are historical targets, not newly reproduced results"
+  },
+  "published_benchmarks": {
+    "absolute_outgoing_strength": {
+      "rank_rho": 0.8,
+      "top5_overlap": 0.6
+    },
+    "signed_outgoing_expected_influence": {
+      "rank_rho": 0.89,
+      "top5_overlap": 0.6
+    },
+    "baseline_mean": {
+      "rank_rho": 0.16,
+      "top5_overlap": 0.4
+    },
+    "centrality_includes_diagonal": true
+  }
+}
